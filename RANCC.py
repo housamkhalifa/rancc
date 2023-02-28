@@ -117,7 +117,7 @@ class RANCC_Classifier(object):
 
             self.predictions = tf.argmax(
                 self.scores1, 1, name="predictions")
-            dec = tf.argmax(self.input_y, 1) * self.predictions
+            dec = tf.cast(tf.argmax(self.input_y, 1) * self.predictions, tf.float32)
             self.concept_vect = tf.nn.embedding_lookup(
                 self.W_concept, self.predictions)
             correct_predictions = tf.equal(
@@ -128,7 +128,7 @@ class RANCC_Classifier(object):
 
             # here we minimize the distance without considering the prediction i.e., reward_class
             self.cos_distance = tf.reduce_mean(tf.losses.cosine_distance(tf.nn.l2_normalize(
-                self.concept_vect, 1), tf.nn.l2_normalize((self.em), 1), 1))
+                self.concept_vect, 1), tf.nn.l2_normalize((self.em), 1), 1)*dec)
             self.loss_rationale = - \
                 tf.reduce_sum((tf.reduce_sum(tf.log(self.sampled_prob+1e-8), 1)* dec * self.lambda_val)
 
