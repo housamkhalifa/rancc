@@ -69,6 +69,7 @@ class RANCC_Classifier(object):
             self.maxSeqLength = num_patterns
             self.lambda_val = lambda_val
             self.training = tf.placeholder(tf.int32)
+            self.dropout_keep_prob = tf.placeholder(tf.float32, name="dropout_keep_prob")
 
             self.W = tf.Variable(tf.random_uniform(
                 [vocab_size, embedding_size], -1.0, 1.0), name="W_embedding")
@@ -83,6 +84,7 @@ class RANCC_Classifier(object):
             self.aggregation = tf.reduce_sum(self.h_conv1, 3)
             self.sampling_prob = tf.nn.softmax(tf.reduce_sum(
                 self.aggregation, 2)/tf.sqrt(tf.cast(embedding_size, tf.float32)), name="sampling_prob")
+            self.sampling_prob = tf.layers.dropout(self.sampling_prob, self.dropout_keep_prob)
 
             _, self.ind = tf.cond(self.training > 0, lambda: sample_without_replacement(
                 self.sampling_prob, self.maxSeqLength), lambda: return_topn(self.sampling_prob, self.maxSeqLength))
