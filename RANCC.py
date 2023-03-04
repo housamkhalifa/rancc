@@ -56,7 +56,7 @@ class RANCC_Classifier(object):
     """
 
     def __init__(self, sequence_length, num_classes, vocab_size,
-                 embedding_size, lstm_units, batch_size, num_patterns, lambda_val=0.0008):
+                 embedding_size, lstm_units, batch_size, num_patterns, lambda_val=0.08):
         with tf.device('/gpu:0'):
             #            tf.set_random_seed(2)
             self.batch_size = batch_size
