@@ -13,7 +13,7 @@ NUM_WORDS = 10000
 INDEX_FROM = 3
 maxlen = 50
 num_classes = 2
-num_patterns = int(0.5*maxlen)
+num_patterns = int(0.2*maxlen) # 20% of the input as a rationale
 
 np_load_old = np.load
 np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
