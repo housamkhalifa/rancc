@@ -82,7 +82,7 @@ class RANCC_Classifier(object):
                 conv2d((self.embdded_chars_expanded), W_conv1) + b_conv1)
             self.aggregation = tf.reduce_sum(self.h_conv1, 3)
             self.sampling_prob = tf.nn.softmax(tf.reduce_sum(
-                self.aggregation, 2), name="sampling_prob")
+                self.aggregation, 2)/tf.sqrt(tf.cast(embedding_size, tf.float32)), name="sampling_prob")
 
             _, self.ind = tf.cond(self.training > 0, lambda: sample_without_replacement(
                 self.sampling_prob, self.maxSeqLength), lambda: return_topn(self.sampling_prob, self.maxSeqLength))
