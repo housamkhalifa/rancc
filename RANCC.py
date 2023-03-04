@@ -77,8 +77,8 @@ class RANCC_Classifier(object):
             self.embdded_chars_expanded = tf.expand_dims(self.embdded_chars, 3)
             self.W_concept = tf.Variable(tf.random_uniform(
                 [num_classes, embedding_size], -1.0, 1.0), name="W_concept")
-            W_conv1 = weight_variable([1, 10, 1, 256], "wc1")
-            b_conv1 = bias_variable([256], "bc1")
+            W_conv1 = weight_variable([1, 10, 1, 128], "wc1")
+            b_conv1 = bias_variable([128], "bc1")
             self.h_conv1 = tf.nn.relu(
                 conv2d((self.embdded_chars_expanded), W_conv1) + b_conv1)
             self.aggregation = tf.reduce_sum(self.h_conv1, 3)
@@ -135,4 +135,4 @@ class RANCC_Classifier(object):
             # We added the entropy to encourage exploration
             self.entropy = -0.0001*tf.reduce_sum((self.sampling_prob*tf.log(self.sampling_prob+1e-8)), 1) 
 
-            self.cost = self.cross_entropy + self.cos_distance + self.loss_rationale + self.entropy
+            self.cost = self.cross_entropy + 0.0001*self.cos_distance + self.loss_rationale + self.entropy
