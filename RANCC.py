@@ -77,8 +77,8 @@ class RANCC_Classifier(object):
             self.embdded_chars_expanded = tf.expand_dims(self.embdded_chars, 3)
             self.W_concept = tf.Variable(tf.random_uniform(
                 [num_classes, embedding_size], -1.0, 1.0), name="W_concept")
-            W_conv1 = weight_variable([1, 25, 1, 32], "wc1")
-            b_conv1 = bias_variable([32], "bc1")
+            W_conv1 = weight_variable([1, 10, 1, 256], "wc1")
+            b_conv1 = bias_variable([256], "bc1")
             self.h_conv1 = tf.nn.relu(
                 conv2d((self.embdded_chars_expanded), W_conv1) + b_conv1)
             self.aggregation = tf.reduce_sum(self.h_conv1, 3)
