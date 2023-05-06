@@ -132,7 +132,7 @@ class RANCC_Classifier(object):
             self.cos_distance = tf.reduce_mean(tf.losses.cosine_distance(tf.nn.l2_normalize(
                 self.concept_vect, 1), tf.nn.l2_normalize((self.em), 1), 1)*dec)
             self.loss_rationale = tf.reduce_mean(-(tf.log(self.sampled_prob+1e-8)*tf.expand_dims(dec,1) * self.lambda_val)
-            # We added the entropy to encourage exploration
+            # We can add the entropy to encourage exploration, (it's not required)
             self.entropy = -0.0001*tf.reduce_sum((self.sampling_prob*tf.log(self.sampling_prob+1e-8)), 1) 
 
             self.cost = self.cross_entropy + 0.0001*self.cos_distance + self.loss_rationale + self.entropy
